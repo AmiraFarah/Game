@@ -211,11 +211,14 @@ class Balls {
 for(let position3 = 300; position3 < 950; position3 +=50 )
 {
 const balls= new Balls({position:{x:515,y:position3-200}})
-console.log(balls)
 balls.draw1()
 }
 //======================================================
-
+for (let position4 =500; position4 < 1130; position4 +=50)
+{
+    const balls= new Balls({position:{x:1030,y:position4-400}})
+    balls.draw1()
+}
 //======================================================
 
 
@@ -223,6 +226,17 @@ for(let position2 = 90; position2 < 1060; position2 +=50 )
 { 
     const balls = new Balls ({position:{x:position2, y : 50}})
     balls.draw1()
+}
+//===================================================
+for (let position5 = 70; position5 < 1000; position5+=50)
+{
+    const balls = new Balls ({position:{x:position5, y : 390}})
+    balls.draw1()
+}
+//===================================================
+for (let position6 =60 ; position6 < 1060 ; position6 += 50) 
+{
+    const balls = new Balls ({position:{x:position6, y :730}})
+    balls.draw1()
 
 }
-
