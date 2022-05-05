@@ -199,11 +199,30 @@ class Balls {
 
     }
 }
-//const balls= new Balls()
-//const pellets=[]
- for (let position1 = 80; position1 < 600; position1 +=30 )
+//=================drwaing white balls====================
+
+ for (let position1 = 90; position1 < 700; position1 +=50 )
  {
- const balls= new Balls({position:{x:(position1-40),y: position1}})
+ const balls= new Balls({position:{x:(40),y:position1}})
+     console.log(balls)
+     balls.draw1()
+}
+//======================================================
+for(let position3 = 300; position3 < 950; position3 +=50 )
+{
+const balls= new Balls({position:{x:515,y:position3-200}})
+console.log(balls)
 balls.draw1()
 }
-// pellete = new Balls(bo)
+//======================================================
+
+//======================================================
+
+
+for(let position2 = 90; position2 < 1060; position2 +=50 )
+{ 
+    const balls = new Balls ({position:{x:position2, y : 50}})
+    balls.draw1()
+
+}
+
