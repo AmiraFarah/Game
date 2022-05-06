@@ -99,15 +99,16 @@ blue2.draw()
 
 //=====================  creating pac man================
 class PacMan {
-    constructor({position}){
+    constructor({ position }) {
         this.position = position
-       // this.velocity = velocity;
-        // this.radius = 20
+        // this.velocity = velocity;
+        this.radius = 20
 
     }
     draw1() {
         ctx.beginPath()
-        ctx.arc(this.position.x , this.position.y, 20, 0, 2 * Math.PI)
+        ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2 - 0.75)
+        ctx.lineTo(this.position.x, this.position.y)
         ctx.stroke()
         ctx.fillStyle = 'yellow'
         ctx.fill()
@@ -115,39 +116,42 @@ class PacMan {
 
     }
 }
-const pacman1 = new PacMan({position : { x:42 , y: 42}})
+const pacman1 = new PacMan({ position: { x: 42, y: 42 } })
 pacman1.draw1()
 window.addEventListener('keydown', check_Key)
-function check_Key(k) 
-{
+function check_Key(k) {
 
     if (k.key === 'ArrowUp')                // pressing up key
     {
-        pacman1.position.y -= 15
+        pacman1.position.y -= 20
         animation()
     }
     else
         if (k.key === 'ArrowLeft') {     // pressing left key
-            pacman1.position.x -= 15
+            pacman1.position.x -= 20
             animation()
+
         }
         else if (k.key === 'ArrowDown') {       // pressing  down key
-           
-            pacman1.position.y += 15
+
+            pacman1.position.y += 18
             animation()
         }
         else if (k.key === 'ArrowRight')       // pressing right key
         {
-            pacman1.position.x += 15
+            pacman1.position.x += 20
             animation()
+
 
         }
 }
 
 //========================= PacMan animation===============
-
-function animation()
-{
+function between(x, min, max) {
+    return x >= min && x <= max;
+  }
+  
+function animation() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     box.draw()
     insideBox.draw()
@@ -155,13 +159,16 @@ function animation()
     box3.draw()
     box4.draw()
     pacman1.draw1()
+    drawPellete()
+    //ghost.draw1()
+   // moveBall()    
 
 
 }
 //================================ horizontal rectangle =================
 
 class middle {
-    constructor({position}, {width}, {height}) {
+    constructor({ position }, { width }, { height }) {
         this.position = position
         this.width = width
         this.height = height
@@ -171,72 +178,168 @@ class middle {
     draw() {
 
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.position.x, this.position.y,this.width , this.height )
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
-const box3 = new middle({position: {x: 480,y:70 }},{width: 70}, {height: 1200});
+const box3 = new middle({ position: { x: 480, y: 70 } }, { width: 70 }, { height: 1200 });
 box3.draw();
-    // ============================== verticalrectangle =================
+// ============================== verticalrectangle =================
 
-const box4 = new middle({position: {x: 70,y :350}},{ width: 950}, {height : 70})
+const box4 = new middle({ position: { x: 70, y: 350 } }, { width: 950 }, { height: 70 })
 box4.draw()
 
 //=====================white balls=================
 class Balls {
-    constructor({position}){
+    constructor({ position }) {
         this.position = position
-       // this.velocity = velocity;
-         this.radius = 12
+        // this.velocity = velocity;
+        this.radius = 12
 
     }
     draw1() {
         ctx.beginPath()
-        ctx.arc(this.position.x , this.position.y, this.radius, 0, 2 * Math.PI)
+        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
         ctx.stroke()
         ctx.fillStyle = 'white'
         ctx.fill()
         ctx.closePath()
 
     }
+    delete(x,y) {
+        ctx.beginPath()
+        ctx.arc(x,y, this.radius, 0, 2 * Math.PI)
+        ctx.stroke()
+        ctx.fillStyle = 'black'
+        ctx.fill()
+        ctx.closePath()
+    }
 }
 //=================drwaing white balls====================
+function drawPellete() {
+    const arr1 = []
+    let i = 0;
+    let j =0 ;
+    for (let position1 = 90; position1 < 700; position1 += 50) {
+        const balls = new Balls({ position: { x: (40), y: position1 } })
+        arr1.push(balls);
+        balls.draw1()
+        i++
+    }
+     window.addEventListener('keydown', check)
+    function check (k){
+         if (k.key === 'ArrowDown')  {
+        console.log(pacman1.position)
+        //console.log(arr1)
+            const closestToBall =arr1.filter((ball)=>{
+             return between(pacman1.position.y,ball.position.y-30,ball.position.y+30)
 
- for (let position1 = 90; position1 < 700; position1 +=50 )
- {
- const balls= new Balls({position:{x:(40),y:position1}})
-     console.log(balls)
-     balls.draw1()
-}
-//======================================================
-for(let position3 = 300; position3 < 950; position3 +=50 )
-{
-const balls= new Balls({position:{x:515,y:position3-200}})
-balls.draw1()
-}
-//======================================================
-for (let position4 =500; position4 < 1130; position4 +=50)
-{
-    const balls= new Balls({position:{x:1030,y:position4-400}})
-    balls.draw1()
-}
-//======================================================
+            })
+            const blackBalls = new Balls({position: { x: (closestToBall[0].position.x), y: closestToBall[0].position.y }})
+            //console.log(closestToBall)
+blackBalls.delete(closestToBall[0].position.x, closestToBall[0].position.y)  
+console.log(arr1[0])
+arr1.splice(0,1)       }
+     }
+    
+  //  }
+    //======================================================
+    const arr2 = []
+
+    for (let position3 = 300; position3 < 950; position3 += 50) {
+        const balls = new Balls({ position: { x: 515, y: position3 - 200 } })
+        arr2.push(balls);
+        balls.draw1()
+       
+    }
+    //======================================================
+    const arr3 = []
+
+    for (let position4 = 500; position4 < 1130; position4 += 50) {
+        const balls = new Balls({ position: { x: 1030, y: position4 - 400 } })
+        arr3.push(balls);
+        balls.draw1()
+
+    }
+    //======================================================
+
+    const arr4 = []
+
+    for (let position2 = 90; position2 < 1060; position2 += 50) {
+        const balls = new Balls({ position: { x: position2, y: 50 } })
+        arr4.push(balls);
+        balls.draw1()
+
+    }
+    //===================================================
+    const arr5 = []
+
+    for (let position5 = 70; position5 < 1000; position5 += 50) {
+        const balls = new Balls({ position: { x: position5, y: 390 } })
+        arr5.push(balls);
+        balls.draw1()
+    }
+    //===================================================
+    const arr6 = []
+
+    for (let position6 = 60; position6 < 1060; position6 += 50) {
+        const balls = new Balls({ position: { x: position6, y: 730 } })
+        arr6.push(balls);
+        balls.draw1()
+
+    }
+     function deleteBalls() {
+         
+arr1.splice(1,1) 
+console.log(arr1[0]) 
+const del = new Balls({position : arr1[0]}) 
+console.log(arr1[0])
+console.log(position)
+del.delete()
+  console.log('deleted')
+     }
+    }
+//========================== Ghost======================
 
 
-for(let position2 = 90; position2 < 1060; position2 +=50 )
-{ 
-    const balls = new Balls ({position:{x:position2, y : 50}})
-    balls.draw1()
-}
-//===================================================
-for (let position5 = 70; position5 < 1000; position5+=50)
-{
-    const balls = new Balls ({position:{x:position5, y : 390}})
-    balls.draw1()
-}
-//===================================================
-for (let position6 =60 ; position6 < 1060 ; position6 += 50) 
-{
-    const balls = new Balls ({position:{x:position6, y :730}})
-    balls.draw1()
+class Ghost {
+    constructor({ position }) {
+        this.position = position
+        // this.velocity = velocity;
+        this.radius = 20
 
+    }
+    draw1() {
+        ctx.beginPath()
+        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI)
+        ctx.stroke()
+        ctx.fillStyle = 'red'
+        ctx.fill()
+        ctx.closePath()
+
+    }
 }
+//const ghost = new Ghost({ position: { x: 500, y: 42 } })
+
+ 
+// move ghost random
+function moveRandom() {
+    //canvas width and height is same in your case, so multiplied by one to get both x and y. This will give x, y values within canvas.
+    return Math.floor(Math.random()*canvas.width);
+   }
+// function moveBall()
+// {
+//     let x = moveRandom();
+//     let y = moveRandom();
+//     console.log(x)
+//     console.log(y)
+    
+//     const ghost = new Ghost({position:{ x, y}})
+//     function animate(){
+//         requestAnimationFrame(animate)
+//         ghost.draw1();
+
+//     }
+//     animate()
+    
+//   }
+  
